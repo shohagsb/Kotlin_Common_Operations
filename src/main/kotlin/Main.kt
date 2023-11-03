@@ -8,6 +8,9 @@ fun main(args: Array<String>) {
         Hero("Sir Stephen", 37, Gender.MALE),
     )
 
+
+    // Phase-1
+
     /** first, firstOrNull, last, lastOrNull * */
     println("First hero name of the list: ${heroes.first().name}")
     println("First hero name of the list: ${heroes.firstOrNull()?.name}")
@@ -29,7 +32,7 @@ fun main(args: Array<String>) {
     println("maxBy: ${heroes.maxBy { it.age < 30 }.name}") //The Kid
 
 
-    // Kotlin predicates
+    /** all, any, none : Kotlin predicates */
 
     /** all */
     println("all: ${heroes.all { it.age < 50 }}")  // false
@@ -40,6 +43,25 @@ fun main(args: Array<String>) {
     /** any */
     println("none: ${heroes.none { it.gender == Gender.FEMALE }}") // false
 
+    // Phase: 2
 
+    /** groupBy, maxBy */
+    val mapByAge: Map<Int, List<Hero>> = heroes.groupBy { it.age }
+    println("groupBy : $mapByAge")
+
+    val (age, group) = mapByAge.maxBy { (_, group) ->
+        group.size
+    }
+
+    /** associateBy, associate */
+    val mapByName = heroes.associateBy { it.name }
+    mapByName["unknown"]?.age  // null
+    mapByName.getValue("unknown").age  // NoSuchElementException
+
+    val mapByAssociate = heroes.associate { it.name to it.age } // map of name and age
+    mapByAssociate.getOrElse("unknown") { 0 } // 0
+
+
+    println("maxBy: $age : ${group.size}")
 
 }
